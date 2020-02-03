@@ -1,5 +1,6 @@
 package com.miage.altea.game_ui.controller;
 
+import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.pokemonTypes.bo.Trainer;
 import com.miage.altea.game_ui.pokemonTypes.services.PokemonTypeService;
 import com.miage.altea.game_ui.pokemonTypes.services.PokemonTypeServiceImpl;
@@ -42,7 +43,11 @@ public class PokemonTrainersController {
         modelAndView.addObject("trainerTeam",
                 trainer.getTeam()
                         .stream()
-                        .map(x -> pokemonTypeService.pokemon(x.getPokemonTypeId()))
+                        .map(x -> {
+                            PokemonType pokemonType = pokemonTypeService.pokemon(x.getPokemonTypeId());
+                            pokemonType.setId(x.getLevel());
+                            return pokemonType;
+                        })
                         .collect(Collectors.toList())
         );
         return modelAndView;
