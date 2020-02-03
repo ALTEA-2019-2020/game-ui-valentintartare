@@ -1,5 +1,6 @@
 package com.miage.altea.game_ui.controller;
 
+import com.miage.altea.game_ui.converter.PokemonConverter;
 import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.pokemonTypes.bo.Trainer;
 import com.miage.altea.game_ui.pokemonTypes.services.PokemonTypeService;
@@ -26,7 +27,7 @@ public class PokemonTrainersController {
     TrainersService trainerServiceImpl;
 
     @Autowired
-    PokemonTypeService pokemonTypeService;
+    PokemonConverter pokemonConverter;
 
     @GetMapping("/trainers")
     public ModelAndView trainers() {
@@ -40,14 +41,10 @@ public class PokemonTrainersController {
         ModelAndView modelAndView = new ModelAndView("trainerTeam");
         Trainer trainer = trainerServiceImpl.getTrainers(name);
         modelAndView.addObject("trainer", trainer.getName());
-        modelAndView.addObject("trainerTeam",
+        modelAndView.addObject("pokemonTypes",
                 trainer.getTeam()
                         .stream()
-                        .map(x -> {
-                            PokemonType pokemonType = pokemonTypeService.pokemon(x.getPokemonTypeId());
-                            pokemonType.setId(x.getLevel());
-                            return pokemonType;
-                        })
+                        .map(x -> pokemonConverter.pokemonToPokemonWithLevel(x))
                         .collect(Collectors.toList())
         );
         return modelAndView;

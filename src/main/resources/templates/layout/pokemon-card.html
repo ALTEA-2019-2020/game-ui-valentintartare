@@ -1,0 +1,28 @@
+<div class="card-deck">
+    {{#pokemonTypes}}
+    <div class="col-md-3">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{name}} <br><span class="badge badge-secondary">ID {{id}} </span>
+                    {{#level}}<span class="badge badge-secondary">Lvl {{level}} </span></h4>{{/level}}
+            </div>
+            <div class="card-img-top">
+                <img src="{{sprites.front_default}}" alt="Pokemon"/>
+                <img src="{{sprites.back_default}}" alt="Pokemon"/>
+            </div>
+            <div class="card-body">
+                <span class="badge badge-primary">Speed : {{stats.speed}}</span>
+                <span class="badge badge-primary">Attack : {{stats.defense}}</span>
+                <span class="badge badge-primary">Defense : {{stats.attack}}</span>
+                <span class="badge badge-primary">HP : {{stats.hp}}</span>
+                <span class="badge badge-primary">
+                    Type :
+                    {{#types}}
+                    {{.}}
+                    {{/types}}
+                </span>
+            </div>
+        </div>
+    </div>
+    {{/pokemonTypes}}
+</div>
