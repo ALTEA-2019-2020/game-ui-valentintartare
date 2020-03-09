@@ -9,6 +9,7 @@ import com.miage.altea.game_ui.pokemonTypes.services.TrainerServiceImpl;
 import com.miage.altea.game_ui.pokemonTypes.services.TrainersService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,9 @@ public class PokemonTrainersController {
 
     @Autowired
     PokemonConverter pokemonConverter;
+
+    @Autowired
+    SecurityControllerAdvice securityControllerAdvice;
 
     @GetMapping("/trainers")
     public ModelAndView trainers() {
@@ -50,4 +54,17 @@ public class PokemonTrainersController {
         return modelAndView;
     }
 
+    @GetMapping("/profile")
+    public ModelAndView profile() {
+        ModelAndView modelAndView = new ModelAndView("profile");
+        Trainer trainer = trainerServiceImpl.getTrainers(((User)securityControllerAdvice.principal()).getUsername());
+        modelAndView.addObject("trainer", trainer.getName());
+        modelAndView.addObject("pokemonTypes",
+                trainer.getTeam()
+                        .stream()
+                        .map(x -> pokemonConverter.pokemonToPokemonWithLevel(x))
+                        .collect(Collectors.toList())
+        );
+        return modelAndView;
+    }
 }
