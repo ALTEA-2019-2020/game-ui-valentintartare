@@ -4,6 +4,7 @@ import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +25,13 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
 
     private String pokemonServiceUrl;
 
-
     public List<PokemonType> listPokemonsTypes() {
             return Arrays.asList(Objects.requireNonNull(Objects.requireNonNull(
                 restTemplate.exchange(pokemonServiceUrl + "/pokemon-types/", HttpMethod.GET, this.getHttpEntity(), PokemonType[].class)).getBody())
         );
     }
 
+    @Cacheable("pokemon-types")
     public PokemonType pokemon(long id) {
         return Objects.requireNonNull
                 (restTemplate.exchange(pokemonServiceUrl + "/pokemon-types/"+id, HttpMethod.GET, this.getHttpEntity(), PokemonType.class)).getBody();
