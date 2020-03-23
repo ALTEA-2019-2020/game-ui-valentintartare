@@ -110,7 +110,7 @@ async function refreshBattle(){
         // wait a bit, then execute an IA turn if necessary
         setTimeout(() => {
             iaTurn();
-    }, 1000);
+        }, 1000);
     }
     else{
         await showMessage(`This is ${trainerName}'s turn.`);
@@ -190,9 +190,9 @@ async function animateCss(element, animationName){
         node.removeClass()
             .addClass('animated ' + animationName)
             .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
-            node.removeClass();
-        resolve();
-    });
+                node.removeClass();
+                resolve();
+            });
     });
 }
 
@@ -210,13 +210,13 @@ async function showMessage(message){
         let i = 0;
         let timer = setInterval(() => {
             if(i<message.length){
-            $(selector).append(message.charAt(i));
-            i++;
-        }
-    else{
-            clearInterval(timer);
-            resolve();
-        }
-    }, 50);
+                $(selector).append(message.charAt(i));
+                i++;
+            }
+            else{
+                clearInterval(timer);
+                resolve();
+            }
+        }, 50);
     });
 }
