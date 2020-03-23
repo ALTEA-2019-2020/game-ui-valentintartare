@@ -22,5 +22,4 @@ public class PokemonType {
     private int weight;
     private List<String> types;
 
-
 }
